@@ -1,77 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>SAS - Admin Reg.</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
+
         .container {
-            max-width: 400px;
+            max-width: 450px;
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
         }
+
         .form-group {
-            margin-bottom: 20px;
+            margin: 20px;
         }
+
         label {
             display: block;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
         }
+
         input[type="text"],
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            color: #555;
         }
+
         button {
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 5px;
-            padding: 10px 20px;
+            padding: 12px 24px;
             cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
+        .container {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #007bff;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            margin-right: 10px;
+        }
+
+        /* Add a media query for responsiveness */
+        @media (max-width: 800px) {
+            .container {
+                max-width: 90%;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h2>Admin Panel</h2>
-        <form>
+        <h2>Smart Attendance System</h2>
+        <h2>Admin Registration</h2>
+        <form action="process_registration.php" method="post" onsubmit="return validateForm()">
             <div class="form-group">
-                <label for="username">User Name</label>
+                <label for="username">Company User Name</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Company Email</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+                <span id="passwordError" class="error"></span>
             </div>
             <div class="form-group">
                 <label for="repassword">Re-enter Password</label>
                 <input type="password" id="repassword" name="repassword" required>
+                <span id="repasswordError" class="error"></span>
             </div>
             <div class="form-group">
-                <label for="address">Address</label>
+                <label for="address">Company Address</label>
                 <input type="text" id="address" name="address" required>
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit">Register</button>
+            <button type="button" onclick="redirectToLogin()">Login</button>
         </form>
     </div>
+
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var repassword = document.getElementById("repassword").value;
+            var passwordError = document.getElementById("passwordError");
+            var repasswordError = document.getElementById("repasswordError");
+
+            // Password validation: At least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character
+            var strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            if (!strongPasswordPattern.test(password)) {
+                passwordError.textContent = "Password must be strong (at least 8 characters with uppercase, lowercase, number, and special character)";
+                return false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            if (password !== repassword) {
+                repasswordError.textContent = "Passwords do not match";
+                return false;
+            } else {
+                repasswordError.textContent = "";
+            }
+
+            return true;
+        }
+        function redirectToLogin() {
+            window.location.href = "login.html";
+        }
+    </script>
 </body>
+
 </html>
