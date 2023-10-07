@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <title>SAS - Admin login.</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .form-group {
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #007bff;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Add a media query for responsiveness */
+        @media (max-width: 800px) {
+            .container {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Smart Attendance System</h2>
+        <h2>Admin Login</h2>
+        <form action="process_login.php" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="username">Company User Name</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <span id="passwordError" class="error"></span>
+            </div>
+            <div class="form-group">
+                <!-- Change button text from "Register" to "Login" -->
+                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+            </div>
+        </form>
+    </div>
+    <!-- Change link text from "Make an account?" to "Don't have an account?" -->
+    <div class="text-center">Don't have an account? <a href="registration-form.html">Register here</a></div>
+
+
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var repassword = document.getElementById("repassword").value;
+            var passwordError = document.getElementById("passwordError");
+            var repasswordError = document.getElementById("repasswordError");
+
+            // Password validation: At least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character
+            var strongPasswordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            if (!strongPasswordPattern.test(password)) {
+                passwordError.textContent = "Password must be strong (at least 8 characters with uppercase, lowercase, number, and special character)";
+                return false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            if (password !== repassword) {
+                repasswordError.textContent = "Passwords do not match";
+                return false;
+            } else {
+                repasswordError.textContent = "";
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>
