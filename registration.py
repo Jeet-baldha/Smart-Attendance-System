@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, jsonify
 import face_recognition
 import numpy as np
@@ -8,66 +7,44 @@ from firebase_admin import db
 import json
 import pyrebase
 
-Config = {
-    "apiKey": "AIzaSyAUizon1JMbxAXzxgxEAEN_xlKylf0whVk",
-    "authDomain": "smart-attendance-system-92033.firebaseapp.com",
-    "databaseURL": "https://smart-attendance-system-92033-default-rtdb.firebaseio.com",
-    "projectId": "smart-attendance-system-92033",
-    "storageBucket": "smart-attendance-system-92033.appspot.com",
-    "messagingSenderId": "627834716240",
-    "appId": "1:627834716240:web:82c05b787cb7d10bf41155",
-    "measurementId": "G-HJ5MC3B5C7"
-    };
+# Firebase Configuration
+config = {
+    "apiKey": "YOUR_API_KEY",
+    "authDomain": "YOUR_AUTH_DOMAIN",
+    "databaseURL": "YOUR_DATABASE_URL",
+    "projectId": "YOUR_PROJECT_ID",
+    "storageBucket": "YOUR_STORAGE_BUCKET",
+    "messagingSenderId": "YOUR_MESSAGING_SENDER_ID",
+    "appId": "YOUR_APP_ID",
+    "measurementId": "YOUR_MEASUREMENT_ID"
+}
 
+# Initialize Firebase
+firebase = pyrebase.initialize_app(config)
+database = firebase.database()
 
-
-# firebase = pyrebase.initialize_app(Config)
-# database = firebase.database()
-
-
-# Reference to the root of your database
-
-# Data to be inserted in JSON format
-
-
-# Insert the data using push()
-headers = {'Content-Type': 'application/json'}
-
-cred = credentials.Certificate('smart-attendance-system-92033-firebase-adminsdk-twwbf-6901576c31.json')
-firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://smart-attendance-system-92033-default-rtdb.firebaseio.com/'
-})
-
-# root_ref = db.reference()
-
-
+# Initialize Flask app
 app = Flask(__name__)
 
-@app.route('/reg')
-def reg():  
-    return render_template('registration-form.html')
-
+# Define the /registration route to handle GET and POST requests
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
-    try:
-        data ={
-            "name": request.form.get('username'),
-            "email": request.form.get('email'),
-            "password": request.form.get('password'),
-            "address": request.form.get('address')
-
-        }
-        database.push(data);
-        return render_template('dashboard.html')
-    except:
-        return jsonify({"error":"get error"}),400
-    # if request.content_type == 'application/json':
-    #     data = request.get_json()
-    #     new_ref = root_ref.child('users').push(data)
-    # else:
-    #     return jsonify({'error': 'Invalid content type'}), 400
-
-
+    if request.method == 'POST':
+        try:
+            data ={
+                "name": request.form.get('username'),
+                "email": request.form.get('email'),
+                "password": request.form.get('password'),
+                "address": request.form.get('address')
+            }
+            # Push the data to the Firebase database
+            database.push(data)
+            return render_template('dashboard.html')
+        except:
+            return jsonify({"error": "get error"}), 400
+    else:
+        # Handle GET request (e.g., rendering the registration form)
+        return render_template('registration-form.html')
 
 # Define known individuals and their face encodings
 known_individuals = [
@@ -89,7 +66,6 @@ for individual in known_individuals:
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/recognize', methods=['POST'])
 def recognize_face():
@@ -119,4 +95,3 @@ def recognize_face():
 
 if __name__ == '__main__':
     app.run()
-    app.debug = True
